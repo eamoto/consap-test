@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import supertest from 'supertest';
-import express, {Express, Response} from 'express';
+import express, { Express } from 'express';
 import multer from 'multer';
 import { faker } from '@faker-js/faker';
 import PostController from './../../Controllers/PostController.ts';
@@ -14,7 +14,6 @@ app.get('/posts', PostController.index);
 let testData: string[] = [];
 
 describe('PostController.index', () => {
-
     beforeAll(async () => {
         let csvData: string[] = ["postId,id,name,email,body"];
         for (var i: number = 0; i < 500; i++) {
@@ -73,15 +72,15 @@ describe('PostController.index', () => {
         expect(response.body.current_page).toBe(1);
     });
 
-    it('search', async () => {
-        const email:string = testData[1].split(",")[3];
+    it('search success', async () => {
+        const email: string = testData[1].split(",")[3];
         const response = await supertest(app).get('/posts?search=' + email);
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(1);
         expect(response.body.data[0].email).toBe(email);
     });
 
-    it('empty each result', async () => {
+    it('search no result', async () => {
         const response = await supertest(app).get('/posts?search=not-on-csv@email.com');
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(0);
@@ -92,7 +91,7 @@ describe('PostController.upload', () => {
     it('no file attached', async () => {
         const response = await supertest(app)
             .post('/posts/upload')
-            .send(); 
+            .send();
 
         expect(response.status).toBe(422);
         expect(response.body.error).toBe('Something went wrong. Please try again.');
@@ -106,13 +105,13 @@ describe('PostController.upload', () => {
         expect(response.status).toBe(422);
         expect(response.body.error).toBe('Please upload a CSV file.');
     });
- 
+
     it('invalid headers', async () => {
-        const csvContent:string = `invalidHeader1, invalidHeader2\n1, John Doe`;
+        const csvContent: string = `invalidHeader1, invalidHeader2\n1, John Doe`;
         const response = await supertest(app)
             .post('/posts/upload')
             .attach('file', Buffer.from(csvContent), 'test.csv')
-            
+
         expect(response.status).toBe(422);
         expect(response.body.error).toBe('Invalid CSV headers');
     });
@@ -125,7 +124,7 @@ describe('PostController.upload', () => {
 
         testData = csvData;
         let csvContent: string = csvData.join("\n");
-        
+
         const response = await supertest(app)
             .post('/posts/upload')
             .attach('file', Buffer.from(csvContent), 'test.csv');

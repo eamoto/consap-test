@@ -47,15 +47,10 @@ export default class PostController {
             return;
         }
 
-        const totalSize = parseInt(req.headers['content-length'] || '0', 10);
-        let uploadedSize = 0;
-
         const readStream = fs.createReadStream(file.path);
         const chunks: Buffer[] = [];
 
         readStream.on('data', (chunk: Buffer) => {
-            uploadedSize += chunk.length;
-            const progress = ((uploadedSize / totalSize) * 100).toFixed(2);
             chunks.push(chunk);
         });
 
