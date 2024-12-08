@@ -10,8 +10,10 @@ export default class PostController {
     static readonly MAX_PER_PAGE: number = 8;
 
     static index(req: Request, res: Response): void {
-        const page: number = parseInt(req.query.page as string, 10) || 1;
-        const search: string | null = req.query.search as string || null;
+        let page: number = parseInt(req.query.page as string, 10) || 1;
+        let search: string | null = req.query.search as string || null;
+
+        if (page < 1) page = 1;
 
         let list: Post[] = PostList;
 
@@ -25,11 +27,11 @@ export default class PostController {
 
         let finalList = list.slice(start, end);
 
-        res.send(JSON.stringify({
+        res.json({
             data: finalList,
             current_page: page,
             total_page: Math.ceil(list.length / pageSize),
-        }));
+        });
     }
 
     static upload(req: Request, res: Response): void {
@@ -66,10 +68,10 @@ export default class PostController {
                     csvParser({
                         mapHeaders: ({ header }) => header.replace(/"+/g, '').trim(), //sanitize header
                         mapValues: ({ header, value }) => {
-                            if (header === "body")  
+                            if (header === "body")
                                 return value.replace(/\\n/g, '<br />');
 
-                            return value; 
+                            return value;
                         },
                     })
                 )
@@ -90,10 +92,6 @@ export default class PostController {
                         res.json({ message: 'File uploaded successfully' });
                     }
                 });
-        });
-
-        readStream.on('error', (error) => {
-            res.status(422).json({ error: 'Error processing file' });
         });
     }
 }
