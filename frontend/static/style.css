@@ -1,0 +1,53 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f5f7;
+    font-family: 'Inter', sans-serif;
+    color: #575757;
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.vertical-center {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.unselectable {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.grow-on-hover {
+    -webkit-transition: all 70ms ease;
+    -moz-transition: all 70ms ease;
+    -o-transition: all 70ms ease;
+    transition: all 70ms ease;
+}
+
+.grow-on-hover:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+}
