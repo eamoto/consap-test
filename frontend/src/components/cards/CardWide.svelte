@@ -14,7 +14,7 @@
 	});
 
 	let list: Record<string, string>[] = $state([]);
-	let page: number = $state(0);
+	let page: number = $state(1);
 	let search: string | null = $state(null);
 	let totalPage: number = $state(0);
 	let errorMsg: string | null = $state(null);
@@ -24,7 +24,6 @@
 			const response = await axios.get(endpoint, { params: { page, search } });
 
 			list = response.data.data;
-			page = response.data.current_page;
 			totalPage = response.data.total_page;
 		} catch (error) {
 			errorMsg = error.response.data.error;
@@ -32,7 +31,7 @@
 	};
 
 	const onSearchChange =  (): void => {
-		page = 0;
+		page = 1;
 	};
 </script>
 
@@ -57,7 +56,7 @@
 						{ data["sub-head"].map( h => h.toUpperCase() + ": " + item[h] ).join(" • ") }
 					</div>
 					<p>
-						{ data.body.map( h => item[h] ).join(" ") }
+						{@html data.body.map( h => item[h] ).join(" ") }
 					</p>		
 				</div>
 			{/each}
@@ -83,7 +82,7 @@
 
 <style>
 	.content-container {
-		margin-top: 30px;
+		margin-top: 50px;
 		width: 90%;
 		margin-left: auto;
 		margin-right: auto;
@@ -109,7 +108,6 @@
 		border-top: 1px solid var(--mid-gray);
 		padding-top: 10px;
 		padding-bottom: 30px;
-		text-align: right;
 	}
 
 	.content-foot-container > select {
@@ -121,7 +119,7 @@
 	.content-card {
 		background-color: #fff;
 		margin-bottom: 20px;
-		padding: 20px;
+		padding: 30px 25px 30px 25px;
 		border-radius: 5px;
 		-webkit-box-shadow: 0px 0px 25px -9px rgba(0,0,0,0.19);
 		-moz-box-shadow: 0px 0px 25px -9px rgba(0,0,0,0.19);
@@ -129,19 +127,22 @@
 	}
 
 	.content-card > h3 {
+		margin-top: 0px;
 		margin-bottom: 5px;
+		font-size: 20px;
 		text-transform:uppercase;
 	}
 
 	.content-card > .details {
-		margin-bottom: 10px;
-		font-size: 12px;
+		margin-bottom: 18px;
+		font-size: 14px;
 		color: var(--dark-gray);
 	}
 
 	.content-card  > p {
-		margin: 0px 0px 10px 0px;
-		font-size: 15px;
+		margin: 0px;
+		font-size: 16px;
+		line-height: 1.4;
 	}
 
 	.no-post {

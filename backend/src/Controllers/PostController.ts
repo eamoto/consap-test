@@ -7,7 +7,7 @@ import { Post } from '../Interfaces/Post/PostInterface'
 var PostList: Post[] = [];
 
 export default class PostController {
-    static readonly MAX_PER_PAGE: number = 7;
+    static readonly MAX_PER_PAGE: number = 8;
 
     static index(req: Request, res: Response): void {
         const page: number = parseInt(req.query.page as string, 10) || 1;
@@ -65,6 +65,12 @@ export default class PostController {
                 .pipe(
                     csvParser({
                         mapHeaders: ({ header }) => header.replace(/"+/g, '').trim(), //sanitize header
+                        mapValues: ({ header, value }) => {
+                            if (header === "body")  
+                                return value.replace(/\\n/g, '<br />');
+
+                            return value; 
+                        },
                     })
                 )
                 .on("headers", (headers: string[]) => {
@@ -78,7 +84,7 @@ export default class PostController {
                     fs.unlinkSync(file.path);
 
                     if (!isHeaderValid) {
-                        res.status(400).json({ error: "Invalid CSV headers" });
+                        res.status(422).json({ error: "Invalid CSV headers" });
                         PostList = [];
                     } else {
                         res.json({ message: 'File uploaded successfully' });
@@ -87,7 +93,7 @@ export default class PostController {
         });
 
         readStream.on('error', (error) => {
-            res.status(500).json({ error: 'Error processing file' });
+            res.status(422).json({ error: 'Error processing file' });
         });
     }
 }

@@ -66,7 +66,7 @@
 	</div>
 {:else}
 	<div class="uploader-container vertical-center unselectable">
-		<div class="vertical-center" onclick="{selectFile}">
+		<div class="vertical-center grow-on-hover" onclick="{selectFile}">
 			<div class="uploader-inner-container">
 				Click to upload CSV File
 				<p class="error-message"> { errorMsg } </p>
