@@ -23,6 +23,6 @@ Then..
 ```bash
   cd frontend
   npm install
-  cp .env.example .env.development //Update the .env.development file and modify the VITE_API_URL variable if necessary to point to the appropriate backend.
+  cp .env.example .env.development #Update the .env.development file and modify the VITE_API_URL variable if necessary to point to the appropriate backend.
   npm run dev 
 ```
