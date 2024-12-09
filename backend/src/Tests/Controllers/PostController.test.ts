@@ -121,8 +121,6 @@ describe('PostController.upload', () => {
         for (var i: number = 0; i < 500; i++) {
             csvData.push([faker.number.int(), i + 1, faker.person.fullName(), faker.internet.email(), faker.lorem.paragraph()].join(","))
         }
-
-        testData = csvData;
         let csvContent: string = csvData.join("\n");
 
         const response = await supertest(app)

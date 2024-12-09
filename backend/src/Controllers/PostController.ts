@@ -10,6 +10,10 @@ export default class PostController {
     static readonly MAX_PER_PAGE: number = 8;
 
     static index(req: Request, res: Response): void {
+
+        
+
+
         let page: number = parseInt(req.query.page as string, 10) || 1;
         let search: string | null = req.query.search as string || null;
 
