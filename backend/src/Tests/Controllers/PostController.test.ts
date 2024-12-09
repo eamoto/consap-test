@@ -30,7 +30,7 @@ describe('PostController.index', () => {
 
 
     it('should return first page', async () => {
-        const response = await supertest(app).get('/posts?page=1').set('Accept', 'application/json');
+        const response = await supertest(app).get('/posts?page=1');
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(PostController.MAX_PER_PAGE);
         expect(response.body.current_page).toBe(1);
