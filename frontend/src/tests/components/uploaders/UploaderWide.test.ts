@@ -7,7 +7,7 @@ import axios from 'axios';
 vi.mock('axios');
 
 describe('UploadWide', () => {
-    it('renders correctly and uploads file', async () => {
+    it('should render correctly and uploads file', async () => {
         const handleUploadStatus = vi.fn();
         const files = ['.csv'];
         const endpoint = '/upload';
@@ -31,7 +31,7 @@ describe('UploadWide', () => {
     });
     
 
-    it('displays an error message on upload failure', async () => {
+    it('should display an error message on upload failure', async () => {
         const handleUploadStatus = vi.fn();
         const files = ['.csv'];
         const endpoint = '/upload';

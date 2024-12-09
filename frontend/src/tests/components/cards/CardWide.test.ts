@@ -4,28 +4,27 @@ import '@testing-library/jest-dom';
 import CardWide from '../../../components/cards/CardWide.svelte';
 import axios from 'axios';
 import { vi } from 'vitest';
+import { faker } from '@faker-js/faker';
 
 vi.mock("axios");
 
 describe('CardWide', () => {
-    let testEndpoint = '/test';
-    let testData = {
+    let testEndpoint: string = '/test';
+    let testData: { head: string[], 'sub-head': string[], body: string[] } = {
         head: ['name'],
         'sub-head': ['postId', 'id'],
         body: ['body'],
     };
 
+    let testDataMocked: { postId: number, id: number, name: string, email: string, body: string }[] = [];
+    for (var i: number = 0; i < 500; i++) {
+        testDataMocked.push({ postId: faker.number.int(), id: i + 1, name: faker.person.fullName(), email: faker.internet.email(), body: faker.lorem.paragraph() })
+    }
+
     let fetchSuccess = (): void => {
         vi.mocked(axios, true).get.mockResolvedValueOnce({
             data: {
-                data: [
-                    { postId: 1, id: 1, name: "provident id voluptas", email: "Nathan@solon.io", body: "" },
-                    { postId: 1, id: 2, name: "eaque et deleniti atque tenetur ut quo ut", email: "", body: "" },
-                    { postId: 2, id: 3, name: "fugit labore quia mollitia quas deserunt nostrum sunt", email: "", body: "" },
-                    { postId: 2, id: 4, name: "modi ut eos dolores illum nam dolor", email: "", body: "" },
-                    { postId: 3, id: 5, name: "aut inventore non pariatur sit vitae voluptatem sapiente", email: "", body: "" },
-                    { postId: 4, id: 6, name: "et officiis id praesentipsa dolorem repudiandae", email: "", body: "" },
-                ],
+                data: testDataMocked,
                 current_page: 2,
                 total_page: 63,
             }
@@ -38,11 +37,9 @@ describe('CardWide', () => {
             props: { endpoint: testEndpoint, data: testData },
         });
 
-        await waitFor(() => screen.getByText('provident id voluptas'));
-
-        expect(screen.getByText('eaque et deleniti atque tenetur ut quo ut')).toBeInTheDocument();
-        expect(screen.getByText('fugit labore quia mollitia quas deserunt nostrum sunt')).toBeInTheDocument();
-        expect(screen.getByText('63')).toBeInTheDocument();
+        await waitFor(() => screen.getByText(testDataMocked[0].name));
+        expect(screen.getByText(testDataMocked[1].body)).toBeInTheDocument();
+        expect(screen.getByText('63')).toBeInTheDocument(); //?
     });
 
     it('should display an error message if API fails', async () => {
@@ -65,7 +62,7 @@ describe('CardWide', () => {
             props: { endpoint: testEndpoint, data: testData },
         });
 
-        await waitFor(() => screen.getByText('provident id voluptas'));
+        await waitFor(() => screen.getByText(testDataMocked[0].name));
         const pageSelect = screen.getByRole('combobox') as HTMLSelectElement;
 
         await fireEvent.change(pageSelect, { target: { value: '3' } });
