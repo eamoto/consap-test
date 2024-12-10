@@ -12,7 +12,7 @@ describe('UploadWide', () => {
         const files: string[] = ['.csv'];
         const endpoint: string = '/upload';
 
-        const { container } = render(UploaderWide, {
+        const { container }: { container: HTMLElement } = render(UploaderWide, {
             props: { handleUploadStatus, endpoint, files }
         });
 
@@ -36,7 +36,7 @@ describe('UploadWide', () => {
         const files: string[] = ['.csv'];
         const endpoint: string = '/upload';
 
-        const { container } = render(UploaderWide, {
+        const { container }: { container: HTMLElement } = render(UploaderWide, {
             props: { handleUploadStatus, endpoint, files }
         });
 
