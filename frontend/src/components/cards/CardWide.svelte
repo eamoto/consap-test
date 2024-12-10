@@ -1,5 +1,5 @@
 <script lang="ts">
-	import axios, { type AxiosProgressEvent } from 'axios';
+	import axios, { type AxiosProgressEvent, type AxiosResponse } from 'axios';
 
 	let {
 		endpoint,
@@ -21,7 +21,7 @@
 
 	const getPosts: () => Promise<void> = async (): Promise<void> => {
 		try {
-			const response = await axios.get(endpoint, { params: { page, search } });
+			const response: AxiosResponse<any, any> = await axios.get(endpoint, { params: { page, search } });
 			list = response.data.data;
 			totalPage = response.data.total_page;
 		} catch (error: any) {
