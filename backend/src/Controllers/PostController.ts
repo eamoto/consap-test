@@ -26,7 +26,7 @@ export default class PostController {
         let start: number = (page - 1) * pageSize;
         let end: number = start + pageSize;
 
-        let finalList = list.slice(start, end);
+        let finalList: Post[] = list.slice(start, end);
 
         res.json({
             data: finalList,
@@ -36,7 +36,7 @@ export default class PostController {
     }
 
     static upload(req: Request, res: Response): void {
-        const file = req.file;
+        const file: Express.Multer.File | undefined = req.file;
 
         if (!file) {
             res.status(422).json({ error: 'Something went wrong. Please try again.' });
@@ -48,7 +48,7 @@ export default class PostController {
             return;
         }
 
-        const readStream = fs.createReadStream(file.path);
+        const readStream: fs.ReadStream = fs.createReadStream(file.path);
         const chunks: Buffer[] = [];
 
         readStream.on('data', (chunk: Buffer) => {
