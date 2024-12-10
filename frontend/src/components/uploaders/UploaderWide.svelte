@@ -1,5 +1,5 @@
 <script lang="ts">
-	import axios, { type AxiosProgressEvent } from 'axios';
+	import axios, { type AxiosProgressEvent, type AxiosResponse } from 'axios';
 	import LoaderWide from './../loaders/LoaderWide.svelte';
 
 	let {
@@ -41,7 +41,7 @@
 		formData.append('csvfile', file);
 
 		try {
-			const response = await axios.post(endpoint, formData, {
+			const response: AxiosResponse<any, any> = await axios.post(endpoint, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 				onUploadProgress: (progressEvent: AxiosProgressEvent) => {
 					const loaded: number = progressEvent.loaded || 0;
