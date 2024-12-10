@@ -4,11 +4,10 @@ import path from "path";
 import csvParser from 'csv-parser';
 import { Post } from '../Interfaces/Post/PostInterface'
 
-//For testing purposes only
-var PostList: Post[] = [];
-
 export default class PostController {
     static readonly MAX_PER_PAGE: number = 8;
+    static readonly POST_HEADERS: string[] = ['postId', 'id', 'name', 'email', 'body'];
+    static PostList: Post[] = [];
 
     static index(req: Request, res: Response): void {
         let page: number = parseInt(req.query.page as string, 10) || 1;
@@ -16,7 +15,7 @@ export default class PostController {
 
         if (page < 1) page = 1;
 
-        let list: Post[] = PostList;
+        let list: Post[] = PostController.PostList;
 
         if (search) {
             list = list.filter(o => Object.values(o).join(" ").toLowerCase().includes(search.toLowerCase().trim()))
@@ -56,7 +55,7 @@ export default class PostController {
         });
 
         readStream.on('end', () => {
-            PostList = [];
+            PostController.PostList = [];
             let isHeaderValid: boolean = true;
 
             fs.createReadStream(file.path)
@@ -72,18 +71,18 @@ export default class PostController {
                     })
                 )
                 .on("headers", (headers: string[]) => {
-                    if (!['postId', 'id', 'name', 'email', 'body'].every(header => headers.includes(header))) {
+                    if (!PostController.POST_HEADERS.every(header => headers.includes(header))) {
                         isHeaderValid = false;
                         readStream.destroy();
                     }
                 })
-                .on('data', (row: Post) => PostList.push(row))
+                .on('data', (row: Post) => PostController.PostList.push(row))
                 .on('end', () => {
                     fs.unlinkSync(file.path);
 
                     if (!isHeaderValid) {
                         res.status(422).json({ error: "Invalid CSV headers" });
-                        PostList = [];
+                        PostController.PostList = [];
                     } else {
                         res.json({ message: 'File uploaded successfully' });
                     }
