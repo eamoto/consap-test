@@ -19,7 +19,7 @@
 	let totalPage: number = $state(0);
 	let errorMsg: string | null = $state(null);
 
-	const getPosts = async (): Promise<void> => {
+	const getPosts: () => Promise<void> = async (): Promise<void> => {
 		try {
 			const response = await axios.get(endpoint, { params: { page, search } });
 			list = response.data.data;
@@ -29,7 +29,7 @@
 		}
 	};
 
-	const onSearchChange = (): void => {
+	const onSearchChange: () => void = (): void => {
 		page = 1;
 	};
 </script>

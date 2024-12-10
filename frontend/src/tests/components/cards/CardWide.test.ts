@@ -21,7 +21,7 @@ describe('CardWide', () => {
         testDataMocked.push({ postId: faker.number.int(), id: i + 1, name: faker.person.fullName(), email: faker.internet.email(), body: faker.lorem.paragraph() })
     }
 
-    let fetchSuccess = (): void => {
+    let fetchSuccess: () => void = (): void => {
         vi.mocked(axios, true).get.mockResolvedValueOnce({
             data: {
                 data: testDataMocked,
@@ -63,7 +63,7 @@ describe('CardWide', () => {
         });
 
         await waitFor(() => screen.getByText(testDataMocked[0].name));
-        const pageSelect = screen.getByRole('combobox') as HTMLSelectElement;
+        const pageSelect: HTMLSelectElement = screen.getByRole('combobox') as HTMLSelectElement;
 
         await fireEvent.change(pageSelect, { target: { value: '3' } });
         expect(pageSelect.value).toBe('3');

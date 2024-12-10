@@ -5,8 +5,8 @@ import Loader from '../../../components/loaders/LoaderWide.svelte';
 
 describe('LoaderWide', () => {
     it('should render loader animation', () => {
-        const { container } = render(Loader);
-        const loaderAnimation = container.querySelector('.loader-animation');
+        const { container }: { container: HTMLElement } = render(Loader);
+        const loaderAnimation: Element | null = container.querySelector('.loader-animation');
         expect(loaderAnimation).toBeInTheDocument();
     });
 
@@ -17,14 +17,14 @@ describe('LoaderWide', () => {
     });
 
     it('should not render label when null', () => {
-        const { container } = render(Loader, { props: { label: null } });
-        const loaderLabel = container.querySelector('.loader-label') as HTMLInputElement;
+        const { container }: { container: HTMLElement } = render(Loader, { props: { label: null } });
+        const loaderLabel: HTMLInputElement = container.querySelector('.loader-label') as HTMLInputElement;
         expect(loaderLabel.innerHTML.trim()).toBe("");
     });
 
     it('should not render label when not provided', () => {
-        const { container } = render(Loader);
-        const loaderLabel = container.querySelector('.loader-label') as HTMLInputElement;
-        expect(loaderLabel.innerHTML.trim()).toBe(""); 
+        const { container }: { container: HTMLElement } = render(Loader);
+        const loaderLabel: HTMLInputElement = container.querySelector('.loader-label') as HTMLInputElement;
+        expect(loaderLabel.innerHTML.trim()).toBe("");
     });
 });

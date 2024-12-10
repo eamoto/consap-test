@@ -17,18 +17,20 @@
 	let uploading: boolean = $state(false);
 	let errorMsg: string | null = $state(null);
 
-	const selectFile = () => {
+	const selectFile: () => void = () => {
 		inputFile.click();
 	};
 
-	const assignFile = (e: Event) => {
+	const assignFile: (e: Event) => void = (e: Event) => {
 		let files: FileList | null = (e.target as HTMLInputElement).files;
 		if (files && files.length) {
 			uploadFile(files[0]);
 		}
 	};
 
-	const uploadFile = async (file: File | null): Promise<void> => {
+	const uploadFile: (file: File | null) => Promise<void> = async (
+		file: File | null
+	): Promise<void> => {
 		if (!file) {
 			errorMsg = 'Please select a file to upload';
 			return;

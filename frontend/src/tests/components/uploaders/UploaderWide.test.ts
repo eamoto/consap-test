@@ -46,7 +46,7 @@ describe('UploadWide', () => {
 
         vi.mocked(axios, true).post.mockRejectedValue({ response: { data: { error: 'Upload failed' } } });
 
-        const file = new File(['file content'], 'test.csv', { type: 'text/csv' });
+        const file: File = new File(['file content'], 'test.csv', { type: 'text/csv' });
         fireEvent.change(inputFile, { target: { files: [file] } });
 
         await waitFor(() => {
