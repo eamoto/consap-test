@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import supertest from 'supertest';
+import supertest, { Response } from 'supertest';
 import express, { Express } from 'express';
 import multer from 'multer';
 import { faker } from '@faker-js/faker';
@@ -30,7 +30,7 @@ describe('PostController.index', () => {
 
 
     it('should return first page', async () => {
-        const response = await supertest(app).get('/posts?page=1');
+        const response: Response = await supertest(app).get('/posts?page=1');
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(PostController.MAX_PER_PAGE);
         expect(response.body.current_page).toBe(1);
@@ -38,35 +38,35 @@ describe('PostController.index', () => {
     });
 
     it('should return second page', async () => {
-        const response = await supertest(app).get('/posts?page=2');
+        const response: Response = await supertest(app).get('/posts?page=2');
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(PostController.MAX_PER_PAGE);
         expect(response.body.current_page).toBe(2);
     });
 
     it('should return page 1 when page parameter is missing', async () => {
-        const response = await supertest(app).get('/posts');
+        const response: Response = await supertest(app).get('/posts');
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(PostController.MAX_PER_PAGE);
         expect(response.body.current_page).toBe(1);
     });
 
     it('should return 0 post when requested page is greater than max page', async () => {
-        const response = await supertest(app).get('/posts?page=999');
+        const response: Response = await supertest(app).get('/posts?page=999');
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(0);
         expect(response.body.current_page).toBe(999);
     });
 
     it('should return page 1 when requested page is non numeric', async () => {
-        const response = await supertest(app).get('/posts?page=test');
+        const response: Response = await supertest(app).get('/posts?page=test');
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(PostController.MAX_PER_PAGE);
         expect(response.body.current_page).toBe(1);
     });
 
     it('should return page 1 when requested page is negative number', async () => {
-        const response = await supertest(app).get('/posts?page=-1');
+        const response: Response = await supertest(app).get('/posts?page=-1');
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(PostController.MAX_PER_PAGE);
         expect(response.body.current_page).toBe(1);
@@ -74,14 +74,14 @@ describe('PostController.index', () => {
 
     it('should return search result', async () => {
         const email: string = testData[1].split(",")[3];
-        const response = await supertest(app).get('/posts?search=' + email);
+        const response: Response = await supertest(app).get('/posts?search=' + email);
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(1);
         expect(response.body.data[0].email).toBe(email);
     });
 
     it('should return search no result', async () => {
-        const response = await supertest(app).get('/posts?search=not-on-csv@email.com');
+        const response: Response = await supertest(app).get('/posts?search=not-on-csv@email.com');
         expect(response.status).toBe(200);
         expect(response.body.data).toHaveLength(0);
     });
@@ -89,7 +89,7 @@ describe('PostController.index', () => {
 
 describe('PostController.upload', () => {
     it('should return error message when no file attached', async () => {
-        const response = await supertest(app)
+        const response: Response = await supertest(app)
             .post('/posts/upload')
             .send();
 
@@ -98,7 +98,7 @@ describe('PostController.upload', () => {
     });
 
     it('should return error message when not a CSV file uploaded', async () => {
-        const response = await supertest(app)
+        const response: Response = await supertest(app)
             .post('/posts/upload')
             .attach('file', Buffer.from('test'), 'test.txt');  // Uploading a .txt file
 
@@ -108,7 +108,7 @@ describe('PostController.upload', () => {
 
     it('should return error message when CSV has invalid headers', async () => {
         const csvContent: string = `invalidHeader1, invalidHeader2\n1, John Doe`;
-        const response = await supertest(app)
+        const response: Response = await supertest(app)
             .post('/posts/upload')
             .attach('file', Buffer.from(csvContent), 'test.csv')
 
@@ -123,7 +123,7 @@ describe('PostController.upload', () => {
         }
         let csvContent: string = csvData.join("\n");
 
-        const response = await supertest(app)
+        const response: Response = await supertest(app)
             .post('/posts/upload')
             .attach('file', Buffer.from(csvContent), 'test.csv');
 
