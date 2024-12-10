@@ -1,10 +1,10 @@
-import express from 'express';
+import express, { Express } from 'express';
 import multer from 'multer';
 import cors from 'cors';
 import PostController from './Controllers/PostController'
 
-const app = express();
-const PORT = 3001;
+const app: Express = express();
+const PORT: number = 3001;
 
 app.use(cors());
 

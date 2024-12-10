@@ -6,9 +6,9 @@ import { Post } from '../Interfaces/Post/PostInterface'
 
 export default class PostController {
     static readonly MAX_PER_PAGE: number = 8;
-    static readonly POST_HEADERS: string[] = ['postId', 'id', 'name', 'email', 'body'];
-
+    
     //Temporary - for testing purposes. For production, it is advisable to create a data model.
+    static readonly POST_HEADERS: string[] = ['postId', 'id', 'name', 'email', 'body'];
     static PostList: Post[] = [];
 
     static index(req: Request, res: Response): void {
