@@ -9,8 +9,8 @@ vi.mock('axios');
 describe('UploadWide', () => {
     it('should render correctly and uploads file', async () => {
         const handleUploadStatus = vi.fn();
-        const files = ['.csv'];
-        const endpoint = '/upload';
+        const files: string[] = ['.csv'];
+        const endpoint: string = '/upload';
 
         const { container } = render(UploaderWide, {
             props: { handleUploadStatus, endpoint, files }
@@ -18,10 +18,10 @@ describe('UploadWide', () => {
 
         await waitFor(() => screen.getByText("Click to upload CSV File"));
 
-        const inputFile = container.querySelector('input[type="file"]') as HTMLInputElement;
+        const inputFile: HTMLInputElement = container.querySelector('input[type="file"]') as HTMLInputElement;
         vi.mocked(axios, true).post.mockResolvedValue({ data: { success: true } });
 
-        const file = new File(['file content'], 'test.csv', { type: 'text/csv' });
+        const file: File = new File(['file content'], 'test.csv', { type: 'text/csv' });
         fireEvent.change(inputFile, { target: { files: [file] } });
 
         await waitFor(() => {
@@ -29,12 +29,12 @@ describe('UploadWide', () => {
             expect(axios.post).toHaveBeenCalled();
         });
     });
-    
+
 
     it('should display an error message on upload failure', async () => {
         const handleUploadStatus = vi.fn();
-        const files = ['.csv'];
-        const endpoint = '/upload';
+        const files: string[] = ['.csv'];
+        const endpoint: string = '/upload';
 
         const { container } = render(UploaderWide, {
             props: { handleUploadStatus, endpoint, files }
@@ -42,7 +42,7 @@ describe('UploadWide', () => {
 
         await waitFor(() => screen.getByText("Click to upload CSV File"));
 
-        const inputFile = container.querySelector('input[type="file"]') as HTMLInputElement;
+        const inputFile: HTMLInputElement = container.querySelector('input[type="file"]') as HTMLInputElement;
 
         vi.mocked(axios, true).post.mockRejectedValue({ response: { data: { error: 'Upload failed' } } });
 
@@ -53,7 +53,7 @@ describe('UploadWide', () => {
             expect(handleUploadStatus).not.toHaveBeenCalled();
             expect(axios.post).toHaveBeenCalled();
         });
-            
+
         expect(screen.getByText('Upload failed')).toBeInTheDocument();
     });
 });
